@@ -1,0 +1,29 @@
+# Apuntes scripting
+
+apt update >/dev/null 2>&1 (quita todos los mensajes)
+
+# Para copiar de maquina a virtual
+scp -P 2222 script.sh root@172.0.0.1:/root/
+# Para copiar de virtual a maquina
+scp -P 2222 root@172.0.0.1:/root/script.sh .
+
+function test-err() {
+	if [ $1 -ne 0 ]; then
+		exit
+	fi
+}
+
+echo -e "$LGREEN Que nombre de usuario quieres para tu base de datos $RESET"
+read username
+echo -e "$LGREEN Que contraseña quieres para tu base de datos $RESET"
+read password
+
+echo -e "$LGREEN Creando base de datos $RESET"
+mysql -u root -e "create database glpi;"
+test-err $?
+mysql -u root -e "create user '$username'@'localhost' identified by '$password';"
+test-err $?
+mysql -u root -e "grant all privileges on glpi.* to '$username'@'localhost';"
+test-err $?
+mysql -u root -e "flush privileges;"
+test-err $?
