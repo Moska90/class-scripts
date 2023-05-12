@@ -18,8 +18,7 @@ clear
 echo -e "${GREEN}Preparando instalación de Wordpress ${RESET}"
 
 echo -e "${GREEN}Instalando dependencias ${RESET}"
-mkdir /var/log/install
-apt-get update >/var/log/install/wordpress.log 2>/var/log/install/error.log
+apt-get update >>$LOGFILE 2>$ERRFILE
 test-err $?
 apt-get install -y apache2 mariadb-server >/var/log/install/wordpress.log 2>/var/log/install/error.log
 test-err $?
