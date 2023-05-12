@@ -9,6 +9,9 @@ scp -P 2222 root@172.0.0.1:/root/script.sh .
 
 function test-err() {
 	if [ $1 -ne 0 ]; then
+		echo -e "$LMAGENTA"
+		cat /var/log/install/error.log
+		echo -e "$RESET"
 		exit
 	fi
 }
