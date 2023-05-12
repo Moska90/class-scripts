@@ -17,9 +17,8 @@ clear
 
 echo -e "$LBLUE Instalador de GLPI $RESET"
 
-mkdir /var/log/install
-
 echo -e "$LBLUE Instalando dependencias $RESET"
+mkdir /var/log/install
 apt-get update >>/var/log/install/glpi.log 2>/var/log/install/error.log
 test-err $?
 apt-get install -y apache2 mariadb-server php php-mysql php-json php-fileinfo php-dom php-simplexml php-curl php-gd php-intl >>/var/log/install/glpi.log 2>/var/log/install/error.log
