@@ -2,16 +2,22 @@
 LRED="\e[91m"
 LGREEN="\e[92m"
 LYELLOW="\e[93m"
-LBLUE="\e[94m"
-LMAGENTA="\e[95m"
-LCYAN="\e[96m"
 LGREY="\e[97m"
 BOLD="\e[1m"
 RESET="\e[0m"
 
+function isroot() {
+	if [ $(whoami) != "root" ]; then
+	echo -e "$LRED Necesitas root $RESET"
+	exit 1
+	fi
+}
+
+isroot
+
 function test-err() {
 	if [ $1 -ne 0 ]; then
-		exit
+		exit 1
 	fi
 }
 
@@ -20,9 +26,11 @@ clear
 echo -e "$LGREEN Instalador de GLPI $RESET"
 
 echo -e "$LGREEN Que nombre de usuario quieres para tu base de datos $RESET"
-read username
+read -p > username
+echo -e "$LGREEN Que nombre quieres para tu base de datos $RESET"
+read -p > database
 echo -e "$LGREEN Que contraseña quieres para tu base de datos $RESET"
-read password
+read -p > password
 
 echo -e "$LGREEN Instalando dependencias $RESET"
 apt-get update >/dev/null 2>&1
@@ -41,7 +49,7 @@ mv glpi/* /var/www/html >/dev/null 2>&1
 test-err $?
 
 echo -e "$LGREEN Creando base de datos $RESET"
-mysql -u root -e "create database glpi;"
+mysql -u root -e "create database $database;"
 test-err $?
 mysql -u root -e "create user '$username'@'localhost' identified by '$password';"
 test-err $?
@@ -64,6 +72,13 @@ rm glpi-10.0.6.tgz
 rm -r glpi
 
 echo -e "$LYELLOW Abre tu GLPI en el navegador $RESET"
+
+echo -e "$LGREY Base de datos: localhost $RESET"
+echo -e "$LGREY Usuario: $username $RESET"
+echo -e "$LGREY Contraseña: $password $RESET"
+
+echo -e "$LGREY Usuario: glpi $RESET"
+echo -e "$LGREY Contraseña: glpi $RESET"
 
 # localhost
 # alumnat

@@ -7,14 +7,14 @@ BLUE="\e[34m"
 MAGENTA="\e[35m"
 CYAN="\e[36m"
 GREY="\e[37m"
-LIGHT="\e[1m"
+BOLD="\e[1m"
 RESET="\e[0m"
 
 function intro(){
-echo -e "$LIGHT$MAGENTA    //===============================================//$RESET"
-echo -e "$LIGHT$MAGENTA   //=====$CYAN Creando scripts desde hace 2 dias $LIGHT$MAGENTA=======//$RESET"
-echo -e "$LIGHT$MAGENTA  //============$CYAN GOLDNN ¬ MOSKA MAKEIT $LIGHT$MAGENTA ===========//$RESET"
-echo -e "$LIGHT$MAGENTA //===============================================//$RESET"
+echo -e "$BOLD$MAGENTA    //===============================================//$RESET"
+echo -e "$BOLD$MAGENTA   //=====$CYAN Creando scripts desde hace 2 dias $BOLD$MAGENTA=======//$RESET"
+echo -e "$BOLD$MAGENTA  //============$CYAN GOLDNN ¬ MOSKA MAKEIT $BOLD$MAGENTA ===========//$RESET"
+echo -e "$BOLD$MAGENTA //===============================================//$RESET"
 echo -e "\r\r"  
 }
 
