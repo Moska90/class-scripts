@@ -62,14 +62,26 @@ if [ $script == "0" ]; then
 
 # Wordpress
 elif [ $script == "1" ]; then
+	log="wordpress"
+    clear
+    intro
 
 # KMS
 elif [ $script == "2" ]; then
+	log="KMS"
+    clear
+    intro
 
 # Moodle
 elif [ $script == "3" ]; then
+	log="moodle"
+    clear
+    intro
 
 # Prestashop
 elif [ $script == "3" ]; then
+	log="prestashop"
+    clear
+    intro
 
 fi
