@@ -50,7 +50,7 @@ for i in ${!myArray[@]}; do
 done
 
 echo -e "Que quieres instalar"
-read script
+read -p ">" script
 
 mkdir /var/log/install
 
@@ -63,14 +63,21 @@ if [ $script == "0" ]; then
 	echo -e "$LGREEN Instalador de GLPI $RESET"
 
 	echo -e "$LGREEN De donde lo quieres instalar $RESET"
-	read wget
+	declare -a web
+	web=("172.31.0.5" "github")
 
-	echo -e "$LGREEN Que nombre de usuario quieres para tu base de datos $RESET"
-	read -p > username
+	for i in ${!web[@]}; do
+    	echo -e "$i) ${web[$i]}"
+	done
+
+	read -p ">" webserver
+
 	echo -e "$LGREEN Que nombre quieres para tu base de datos $RESET"
-	read -p > database
+	read -p ">" database
+	echo -e "$LGREEN Que nombre de usuario quieres para tu base de datos $RESET"
+	read -p ">" username
 	echo -e "$LGREEN Que contraseña quieres para tu base de datos $RESET"
-	read -p > password
+	read -p ">" password
 
 	echo -e "$LGREEN Instalando dependencias $RESET"
 	apt-get update >>$LOGFILE 2>$ERRFILE
@@ -81,10 +88,19 @@ if [ $script == "0" ]; then
 	echo -e "$LGREEN Instalando GLPI $RESET"
 	rm /var/www/html/index.html >>$LOGFILE 2>$ERRFILE
 	test-err $?
-	wget $wget >>$LOGFILE 2>$ERRFILE
-	test-err $?
-	tar xzvf glpi-10.0.6.tgz >>$LOGFILE 2>$ERRFILE
-	test-err $?
+	if [ $webserver == "0" ]; then
+		wget 172.31.0.5/glpi/glpi.zip >>$LOGFILE 2>$ERRFILE
+		test-err $?
+		apt install -y unzip >>$LOGFILE 2>$ERRFILE
+		test-err $?
+		unzip glpi.zip >>$LOGFILE 2>$ERRFILE
+		test-err $?
+	else
+		wget https://github.com/glpi-project/glpi/releases/download/10.0.7/glpi-10.0.7.tgz >>$LOGFILE 2>$ERRFILE
+		test-err $?
+		tar -xzvf glpi-10.0.7.tgz >>$LOGFILE 2>$ERRFILE
+		test-err $?
+	fi
 	mv glpi/* /var/www/html >>$LOGFILE 2>$ERRFILE
 	test-err $?
 
@@ -126,19 +142,26 @@ elif [ $script == "1" ]; then
     clear
     intro
 
-	echo -e "${GREEN}Preparando instalación de Wordpress ${RESET}"
+	echo -e "$LGREEN Preparando instalación de Wordpress $RESET"
 
 	echo -e "$LGREEN De donde lo quieres instalar $RESET"
-	read wget
+	declare -a web
+	web=("172.31.0.5" "official website")
 
-	echo -e "$LGREEN Que nombre de usuario quieres para tu base de datos $RESET"
-	read -p > username
+	for i in ${!web[@]}; do
+    	echo -e "$i) ${web[$i]}"
+	done
+
+	read -p ">" webserver
+
 	echo -e "$LGREEN Que nombre quieres para tu base de datos $RESET"
-	read -p > database
+	read -p ">" database
+	echo -e "$LGREEN Que nombre de usuario quieres para tu base de datos $RESET"
+	read -p ">" username
 	echo -e "$LGREEN Que contraseña quieres para tu base de datos $RESET"
-	read -p > password
+	read -p ">" password
 
-	echo -e "${GREEN}Instalando dependencias ${RESET}"
+	echo -e "$LGREEN Instalando dependencias $RESET"
 	apt-get update >>$LOGFILE 2>$ERRFILE
 	test-err $?
 	apt-get install -y apache2 mariadb-server >>$LOGFILE 2>$ERRFILE
@@ -146,15 +169,25 @@ elif [ $script == "1" ]; then
 	apt-get install -y php php-mysql >>$LOGFILE 2>$ERRFILE
 	test-err $?
 
-	echo -e "${GREEN}Instalando Wordpress ${RESET}"
+	echo -e "$LGREEN Instalando Wordpress $RESET"
 	rm /var/www/html/index.html >>$LOGFILE 2>$ERRFILE
-	test-err $?
-	wget 172.31.0.1/wordpress/latest.tar.gz >>$LOGFILE 2>$ERRFILE
-	test-err $?
-	tar -xzvf  >>$LOGFILE 2>$ERRFILE
-	test-err $?
+	if [ $webserver == "0" ]; then
+		wget 172.31.0.5/wordpress/latest.tar.gz >>$LOGFILE 2>$ERRFILE
+		test-err $?
+		tar -xzvf latest.tar.gz >>$LOGFILE 2>$ERRFILE
+		test-err $?
+	else
+		wget https://wordpress.org/latest.zip >>$LOGFILE 2>$ERRFILE
+		test-err $?
+		apt install -y unzip >>$LOGFILE 2>$ERRFILE
+		test-err $?
+		unzip latest.zip >>$LOGFILE 2>$ERRFILE
+		test-err $?
+	fi
 	mv wordpress/* /var/www/html/ >/var/log/install/wordpress.log 2>/var/log/install/error.log
 	test-err $?
+
+	echo -e "$LGREEN Dando permisos $RESET"
 	chown -R www-data:www-data /var/www/html >/var/log/install/wordpress.log 2>/var/log/install/error.log
 	test-err $?
 
@@ -168,12 +201,12 @@ elif [ $script == "1" ]; then
 	mysql -u root -e "flush privileges;"
 	test-err $?
 
-	echo -e "${GREEN}Reiniciando servidor ${RESET}"
+	echo -e "$LGREEN Reiniciando servidor $RESET"
 	systemctl restart apache2
 	test-err $?
 
-	echo -e "${GREEN}Wordpress instalado ${RESET}"
-	echo -e "${GREEN}Ya puedes abrir el servidor en el navegador ${RESET}"
+	echo -e "$LGREEN Wordpress instalado $RESET"
+	echo -e "$LGREEN Ya puedes abrir el servidor en el navegador $RESET"
 
 # KMS
 elif [ $script == "2" ]; then
