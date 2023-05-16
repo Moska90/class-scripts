@@ -21,11 +21,11 @@ ACTIVE=(systemctl status kms | grep "Active")
 LOCALE=$(locale | grep "LANG" | cut -d"=" -f2-)
 
 function intro(){
-echo -e "$BOLD$LMAGENTA    //===============================================//$RESET"
-echo -e "$BOLD$LMAGENTA   //=====$LCYAN Creando scripts desde hace 2 dias $BOLD$LMAGENTA=======//$RESET"
-echo -e "$BOLD$LMAGENTA  //============$LCYAN GOLDNN ¬ MOSKA MAKEIT $BOLD$LMAGENTA ===========//$RESET"
-echo -e "$BOLD$LMAGENTA //===============================================//$RESET"
-echo -e "\r\r"  
+	echo -e "$BOLD$LMAGENTA    //===============================================//$RESET"
+	echo -e "$BOLD$LMAGENTA   //=====$LCYAN Creando scripts desde hace 2 dias $BOLD$LMAGENTA=======//$RESET"
+	echo -e "$BOLD$LMAGENTA  //============$LCYAN GOLDNN ¬ MOSKA MAKEIT $BOLD$LMAGENTA ===========//$RESET"
+	echo -e "$BOLD$LMAGENTA //===============================================//$RESET"
+	echo -e "\r\r"  
 }
 
 function isroot() {
