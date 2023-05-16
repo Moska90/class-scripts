@@ -83,12 +83,14 @@ read -p ">" hacer
 declare -a scripts
 scripts=("GLPI" "Wordpress" "KMS" "Moodle" "Prestashop")
 
+# Install
 if [ $hacer = "0" ]; then
     for i in ${!scripts[@]}; do
     	echo -e "$i) ${scripts[$i]}"
 	done
 	echo -e "Que quieres instalar"
 	read -p ">" script
+# Red
 elif [ $hacer = "1" ]; then
 	log="red"
     clear
@@ -110,6 +112,7 @@ elif [ $hacer = "1" ]; then
 
 	echo -e "\n"
 	echo -e "$LMAGENTA -------------------------------- $RESET"
+# Hardware
 elif [ $hacer = "2" ]; then
 	log="hardware"
     clear
