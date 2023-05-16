@@ -62,14 +62,6 @@ function test-ping() {
 fi
 }
 
-if [ $LOCALE == es_ES.UTF-8 ]
-	then
-		CPU_NAME=$(lscpu | grep "Nombre del modelo" | tr -s " " | cut -d" " -f4-)
-elif [ $LOCALE == en_UE.UTF-8 ]
-	then 
-		CPU_NAME=$(lscpu | grep "Nombre del modelo" | tr -s " " | cut -d" " -f3-)
-fi
-
 clear
 intro
 isroot
@@ -119,14 +111,22 @@ elif [ $hacer = "1" ]; then
 	echo -e "\n"
 	echo -e "$LMAGENTA -------------------------------- $RESET"
 elif [ $hacer = "2" ]; then
+	log="hardware"
+    clear
+    intro
+
+	if [ $LOCALE == es_ES.UTF-8 ]; then
+		CPU_NAME=$(lscpu | grep "Nombre del modelo" | tr -s " " | cut -d" " -f4-)
+	elif [ $LOCALE == en_UE.UTF-8 ]; then 
+		CPU_NAME=$(lscpu | grep "Nombre del modelo" | tr -s " " | cut -d" " -f3-)
+	fi
+
 	CORES=$(lscpu | grep "Núcleo(s) por «socket»:" | tr -s " " | cut -d" " -f4-)
 	THREADS=$(lscpu | grep "CPU(s):" | grep -v "NUMA" | tr -s " " | cut -d" " -f2-)
 	RAM=$(dmidecode --type memory | grep "Size:" | grep -v "No" | grep -v "Volatile" | cut -d" " -f2 |  paste -sd+ | bc)
 	RAM_TYPE=$(dmidecode --type memory | grep "Type:" | grep -v "Error" | grep -v "Unknown" | cut -d" " -f2 | uniq)
 	VGA=$(lspci | grep "VGA" | cut -d" " -f5-)
 	MOTHERBOARD=$(dmidecode --type system | grep "Product" | cut -d" " -f3-)
-
-	clear
 
 	echo -e "$LRED-----------------------------$RESET"
 	echo -e "$STDCOLOR Información sobre la CPU$RESET"
