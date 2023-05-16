@@ -17,7 +17,7 @@ function test-ping() {
         echo -e "$LMAGENTA -------------------------------- $RESET"
         exit
     else
-        echo -e "$LCYAN  Conexion: \t$LGREEN     OK $RESET"
+        echo -e "$LCYAN  Conexion: \t$STDCOLOR     OK $RESET"
 fi
 }
 

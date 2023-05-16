@@ -23,22 +23,22 @@ function test-err() {
 
 clear
 
-echo -e "$LGREEN Instalador de GLPI $RESET"
+echo -e "$STDCOLOR Instalador de GLPI $RESET"
 
-echo -e "$LGREEN Que nombre de usuario quieres para tu base de datos $RESET"
+echo -e "$STDCOLOR Que nombre de usuario quieres para tu base de datos $RESET"
 read -p > username
-echo -e "$LGREEN Que nombre quieres para tu base de datos $RESET"
+echo -e "$STDCOLOR Que nombre quieres para tu base de datos $RESET"
 read -p > database
-echo -e "$LGREEN Que contraseña quieres para tu base de datos $RESET"
+echo -e "$STDCOLOR Que contraseña quieres para tu base de datos $RESET"
 read -p > password
 
-echo -e "$LGREEN Instalando dependencias $RESET"
+echo -e "$STDCOLOR Instalando dependencias $RESET"
 apt-get update >/dev/null 2>&1
 test-err $?
 apt-get install -y apache2 mariadb-server php php-mysql php-json php-fileinfo php-dom php-simplexml php-curl php-gd php-intl >/dev/null 2>&1
 test-err $?
 
-echo -e "$LGREEN Instalando GLPI $RESET"
+echo -e "$STDCOLOR Instalando GLPI $RESET"
 rm /var/www/html/index.html >/dev/null 2>&1
 test-err $?
 wget https://github.com/glpi-project/glpi/releases/download/10.0.6/glpi-10.0.6.tgz >/dev/null 2>&1
@@ -48,7 +48,7 @@ test-err $?
 mv glpi/* /var/www/html >/dev/null 2>&1
 test-err $?
 
-echo -e "$LGREEN Creando base de datos $RESET"
+echo -e "$STDCOLOR Creando base de datos $RESET"
 mysql -u root -e "create database $database;"
 test-err $?
 mysql -u root -e "create user '$username'@'localhost' identified by '$password';"
@@ -58,13 +58,13 @@ test-err $?
 mysql -u root -e "flush privileges;"
 test-err $?
 
-echo -e "$LGREEN Dando permisos $RESET"
+echo -e "$STDCOLOR Dando permisos $RESET"
 chown -R www-data:www-data /var/www/html/* >/dev/null 2>&1
 test-err $?
 chmod -R 755 /var/www/html/* >/dev/null 2>&1
 test-err $?
 
-echo -e "$LGREEN Reiniciando servidor web $RESET"
+echo -e "$STDCOLOR Reiniciando servidor web $RESET"
 systemctl restart apache2 >/dev/null 2>&1
 test-err $?
 

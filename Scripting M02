@@ -16,12 +16,12 @@ function test-err() {
 	fi
 }
 
-echo -e "$LGREEN Que nombre de usuario quieres para tu base de datos $RESET"
+echo -e "$STDCOLOR Que nombre de usuario quieres para tu base de datos $RESET"
 read username
-echo -e "$LGREEN Que contraseña quieres para tu base de datos $RESET"
+echo -e "$STDCOLOR Que contraseña quieres para tu base de datos $RESET"
 read password
 
-echo -e "$LGREEN Creando base de datos $RESET"
+echo -e "$STDCOLOR Creando base de datos $RESET"
 mysql -u root -e "create database glpi;"
 test-err $?
 mysql -u root -e "create user '$username'@'localhost' identified by '$password';"

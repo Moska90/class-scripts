@@ -30,18 +30,18 @@ MOTHERBOARD=$(dmidecode --type system | grep "Product" | cut -d" " -f3-)
 clear
 
 echo -e "$LRED-----------------------------$RESET"
-echo -e "$LGREEN Información sobre la CPU$RESET"
+echo -e "$STDCOLOR Información sobre la CPU$RESET"
 echo -e "Procesador:\t${CPU_NAME}"
 echo -e "Nucleos:\t${CORES}"
 echo -e "Hilos:\t\t${THREADS}"
 echo -e "$LRED-----------------------------$RESET"
 
-echo -e "$LGREEN Información sobre la RAM$RESET"
+echo -e "$STDCOLOR Información sobre la RAM$RESET"
 echo -e "Cantidad:\t\t${RAM} GB"
 echo -e "Tipo:\t${RAM_TYPE}"
 echo -e "$LRED-----------------------------$RESET"
 
-echo -e "$LGREEN Información sobre la gráfica$RESET"
+echo -e "$STDCOLOR Información sobre la gráfica$RESET"
 echo -e "Gráfica:\t${VGA}"
 echo -e "Placa base:\t${MOTHERBOARD}"
 echo -e "$LRED-----------------------------$RESET"
