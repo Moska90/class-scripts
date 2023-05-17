@@ -12,7 +12,6 @@ RESET="\e[0m"
 STDCOLOR="\e[96m"
 ERRCOLOR="\e[91m"
 
-LOGFILE="/var/log/install/$log.log"
 ERRFILE="/var/log/install/error.log"
 
 LOCALE=$(locale | grep "LANG" | cut -d"=" -f2-)
@@ -62,7 +61,7 @@ fi
 clear
 intro
 isroot
-ping -c 1 -W 1 google.com >>$LOGFILE 2>$ERRFILE
+ping -c 1 -W 1 google.com >>/dev/null 2>&1
 internet $?
 
 # List for chosing what to do
@@ -80,7 +79,7 @@ read -p ">" hacer
 declare -a scripts
 scripts=("GLPI" "Wordpress" "KMS" "Moodle" "Prestashop")
 
-mkdir /var/log/install >>$LOGFILE 2>$ERRFILE
+mkdir /var/log/install
 
 # Install
 if [ $hacer = "0" ]; then
@@ -92,7 +91,7 @@ if [ $hacer = "0" ]; then
 
 	# GLPI
 	if [ $script == "0" ]; then
-		log="glpi"
+		LOGFILE="/var/log/install/glpi.log"
 		clear
 		intro
 
@@ -176,7 +175,7 @@ if [ $hacer = "0" ]; then
 
 	# Wordpress
 	elif [ $script == "1" ]; then
-		log="wordpress"
+		LOGFILE="/var/log/install/wordpress.log"
 		clear
 		intro
 
@@ -252,7 +251,7 @@ if [ $hacer = "0" ]; then
 
 	# KMS
 	elif [ $script == "2" ]; then
-		log="KMS"
+		LOGFILE="/var/log/install/kms.log"
 		clear
 		intro
 
@@ -318,7 +317,7 @@ if [ $hacer = "0" ]; then
 
 	# Moodle
 	elif [ $script == "3" ]; then
-		log="moodle"
+		LOGFILE="/var/log/install/moodle.log"
 		clear
 		intro
 
@@ -372,7 +371,7 @@ if [ $hacer = "0" ]; then
 
 	# Prestashop
 	elif [ $script == "4" ]; then
-		log="prestashop"
+		LOGFILE="/var/log/install/prestashop.log"
 		clear
 		intro
 
@@ -446,7 +445,7 @@ if [ $hacer = "0" ]; then
 	fi
 # Red
 elif [ $hacer = "1" ]; then
-	log="red"
+	LOGFILE="/var/log/install/red.log"
     clear
     intro
 
@@ -468,9 +467,11 @@ elif [ $hacer = "1" ]; then
 	echo -e "$LMAGENTA -------------------------------- $RESET"
 # Hardware
 elif [ $hacer = "2" ]; then
-	log="hardware"
+	LOGFILE="/var/log/install/hardware.log"
     clear
     intro
+
+	apt install -y bc >>$LOGFILE 2>$ERRFILE
 
 	if [ $LOCALE == es_ES.UTF-8 ]; then
 		CPU_NAME=$(lscpu | grep "Nombre del modelo" | tr -s " " | cut -d" " -f4-)
