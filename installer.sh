@@ -204,8 +204,8 @@ if [ $hacer = "0" ]; then
 
 		echo -e "$STDCOLOR Instalando dependencias $RESET"
 		apt update >>$LOGFILE 2>$ERRFILE
+		apt install -y apache2 mariadb-server >>$LOGFILE 2>$ERRFILE
 		test-err $?
-		apt install -y apache2 mariadb-server 
 		apt install -y php php-mysql php-curl php-zip php-xml php-bz2 php-mbstring php-gd php-intl php-xmlrpc php-soap php-ldap >>$LOGFILE 2>$ERRFILE
 		test-err $?
 
