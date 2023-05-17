@@ -83,6 +83,9 @@ mkdir /var/log/install
 
 # Install
 if [ $hacer = "0" ]; then
+	clear
+	intro
+
     for i in ${!scripts[@]}; do
     	echo -e "$i) ${scripts[$i]}"
 	done
@@ -124,7 +127,6 @@ if [ $hacer = "0" ]; then
 
 		echo -e "$STDCOLOR Instalando GLPI $RESET"
 		rm /var/www/html/index.html >>$LOGFILE 2>$ERRFILE
-		test-err $?
 		if [ $webserver == "0" ]; then
 			wget 172.31.0.5/glpi/glpi.zip >>$LOGFILE 2>$ERRFILE
 			test-err $?
@@ -132,14 +134,17 @@ if [ $hacer = "0" ]; then
 			test-err $?
 			unzip glpi.zip >>$LOGFILE 2>$ERRFILE
 			test-err $?
+			rm glpi.zip >>/dev/null 2>&1
 		elif [ $webserver == "1" ]; then
 			wget https://github.com/glpi-project/glpi/releases/download/10.0.7/glpi-10.0.7.tgz >>$LOGFILE 2>$ERRFILE
 			test-err $?
 			tar -xzvf glpi-10.0.7.tgz >>$LOGFILE 2>$ERRFILE
 			test-err $?
+			rm glpi-10.0.7.tgz >>/dev/null 2>&1
 		fi
 		mv glpi/* /var/www/html >>$LOGFILE 2>$ERRFILE
 		test-err $?
+		rm -r glpi >>/dev/null 2>&1
 
 		echo -e "$STDCOLOR Creando base de datos $RESET"
 		mysql -u root -e "create database $database;"
@@ -161,15 +166,12 @@ if [ $hacer = "0" ]; then
 		systemctl restart apache2 >>$LOGFILE 2>$ERRFILE
 		test-err $?
 
-		rm glpi-10.0.6.tgz
-		rm -r glpi
-
 		echo -e "$LYELLOW Abre tu GLPI en el navegador $RESET"
-
-		echo -e "$LGREY Base de datos: localhost $RESET"
+		echo -e "$LGREY Base de datos: $database $RESET"
 		echo -e "$LGREY Usuario: $username $RESET"
 		echo -e "$LGREY Contraseña: $password $RESET"
 
+		echo -e "$LGREY Sesion de glpi $RESET"
 		echo -e "$LGREY Usuario: glpi $RESET"
 		echo -e "$LGREY Contraseña: glpi $RESET"
 
@@ -241,13 +243,10 @@ if [ $hacer = "0" ]; then
 
 		echo -e "$STDCOLOR Wordpress instalado $RESET"
 		
-		# echo -e "$LYELLOW Abre tu Wordpress en el navegador $RESET"
-
-		# echo -e "$LGREY Usuario: $username $RESET"
-		# echo -e "$LGREY Contraseña: $password $RESET"
-
-		# echo -e "$LGREY Usuario: glpi $RESET"
-		# echo -e "$LGREY Contraseña: glpi $RESET"
+		echo -e "$LYELLOW Abre tu Wordpress en el navegador $RESET"
+		echo -e "$LGREY Base de datos: $database $RESET"
+		echo -e "$LGREY Usuario: $username $RESET"
+		echo -e "$LGREY Contraseña: $password $RESET"
 
 	# KMS
 	elif [ $script == "2" ]; then
@@ -341,7 +340,6 @@ if [ $hacer = "0" ]; then
 
 		echo -e "$STDCOLOR Instalando Moodle $RESET"
 		rm /var/www/html/index.html >>$LOGFILE 2>$ERRFILE
-		test-err $?
 		wget https://download.moodle.org/download.php/direct/stable401/moodle-latest-401.tgz >>$LOGFILE 2>$ERRFILE
 		test-err $?
 		tar zxvf moodle-latest-401.tgz >>$LOGFILE 2>$ERRFILE
@@ -368,6 +366,11 @@ if [ $hacer = "0" ]; then
 		test-err $?
 
 		systemctl restart apache2 >>$LOGFILE 2>$ERRFILE
+
+		echo -e "$LYELLOW Abre tu Moodle en el navegador $RESET"
+		echo -e "$LGREY Base de datos: $database $RESET"
+		echo -e "$LGREY Usuario: $username $RESET"
+		echo -e "$LGREY Contraseña: $password $RESET"
 
 	# Prestashop
 	elif [ $script == "4" ]; then
@@ -409,7 +412,7 @@ if [ $hacer = "0" ]; then
 			wget http://172.31.0.5//prestashop/prestashop_1.7.7.2.zip >>$LOGFILE 2>$ERRFILE
 			test-err $?
 		elif [ $webserver == "1" ]; then
-			wget https://www.prestashop.com/es/system/files/ps_releases/prestashop_1.7.7.2.zip >>$LOGFILE 2>$ERRFILE
+			wget https://github.com/PrestaShop/PrestaShop/releases/download/8.0.4/prestashop_8.0.4.zip >>$LOGFILE 2>$ERRFILE
 			test-err $?
 		fi
 		mv prestashop_1.7.7.2.zip /var/www/html >>$LOGFILE 2>$ERRFILE
@@ -438,6 +441,11 @@ if [ $hacer = "0" ]; then
 		test-err $?
 		systemctl restart apache2
 		test-err $?
+
+		echo -e "$LYELLOW Abre tu Prestashop en el navegador $RESET"
+		echo -e "$LGREY Base de datos: $database $RESET"
+		echo -e "$LGREY Usuario: $username $RESET"
+		echo -e "$LGREY Contraseña: $password $RESET"
 
 	else
 		echo -e "$LRED ERES GILIPOLLAS $RESET"
