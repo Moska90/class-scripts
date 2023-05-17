@@ -324,6 +324,15 @@ if [ $hacer = "0" ]; then
 		echo -e "$STDCOLOR Instalador de Moodle $RESET"
 		echo -e "$STDCOLOR -------------------- $RESET"
 
+		declare -a web
+		web=("172.31.0.5" "official website")
+
+		for i in ${!web[@]}; do
+			echo -e "$i) ${web[$i]}"
+		done
+
+		read -p ">" webserver
+
 		echo -e "$STDCOLOR Que nombre quieres para tu base de datos $RESET"
 		read -p ">" database
 		echo -e "$STDCOLOR Que nombre de usuario quieres para tu base de datos $RESET"
@@ -340,10 +349,17 @@ if [ $hacer = "0" ]; then
 
 		echo -e "$STDCOLOR Instalando Moodle $RESET"
 		rm /var/www/html/index.html >>$LOGFILE 2>$ERRFILE
-		wget https://download.moodle.org/download.php/direct/stable401/moodle-latest-401.tgz >>$LOGFILE 2>$ERRFILE
-		test-err $?
-		tar zxvf moodle-latest-401.tgz >>$LOGFILE 2>$ERRFILE
-		test-err $?
+		if [ $webserver == "0" ]; then
+			wget 172.31.0.5/moodle/moodle-4.1.1.tgz >>$LOGFILE 2>$ERRFILE
+			test-err $?
+			tar zxvf moodle-4.1.1.tgz >>$LOGFILE 2>$ERRFILE
+			test-err $?
+		elif [ $webserver == "1" ]; then
+			wget https://download.moodle.org/download.php/direct/stable401/moodle-latest-401.tgz >>$LOGFILE 2>$ERRFILE
+			test-err $?
+			tar zxvf moodle-latest-401.tgz >>$LOGFILE 2>$ERRFILE
+			test-err $?
+		fi
 		mv moodle/* /var/www/html/ >>$LOGFILE 2>$ERRFILE
 		test-err $?
 		mkdir /var/www/moodledata >>$LOGFILE 2>$ERRFILE
@@ -399,6 +415,7 @@ if [ $hacer = "0" ]; then
 		echo -e "$STDCOLOR Que contraseña quieres para tu base de datos $RESET"
 		read -p ">" password
 
+		echo -e "$STDCOLOR Instalando dependencias $RESET"
 		apt update >>$LOGFILE 2>$ERRFILE
 		test-err $?
 		apt install -y apache2 mariadb-server >>$LOGFILE 2>$ERRFILE
@@ -411,19 +428,25 @@ if [ $hacer = "0" ]; then
 		if [ $webserver == "0" ]; then
 			wget http://172.31.0.5//prestashop/prestashop_1.7.7.2.zip >>$LOGFILE 2>$ERRFILE
 			test-err $?
+			mv prestashop_1.7.7.2.zip /var/www/html >>$LOGFILE 2>$ERRFILE
+			test-err $?
+			cd /var/www/html >>$LOGFILE 2>$ERRFILE
+			test-err $?
+			unzip prestashop_1.7.7.2.zip >>$LOGFILE 2>$ERRFILE
+			test-err $?
 		elif [ $webserver == "1" ]; then
 			wget https://github.com/PrestaShop/PrestaShop/releases/download/8.0.4/prestashop_8.0.4.zip >>$LOGFILE 2>$ERRFILE
 			test-err $?
+			mv prestashop_8.0.4.zip /var/www/html >>$LOGFILE 2>$ERRFILE
+			test-err $?
+			cd /var/www/html >>$LOGFILE 2>$ERRFILE
+			test-err $?
+			unzip prestashop_8.0.4.zip >>$LOGFILE 2>$ERRFILE
+			test-err $?
 		fi
-		mv prestashop_1.7.7.2.zip /var/www/html >>$LOGFILE 2>$ERRFILE
-		test-err $?
-		cd /var/www/html >>$LOGFILE 2>$ERRFILE
-		test-err $?
-		unzip prestashop_1.7.7.2.zip >>$LOGFILE 2>$ERRFILE
-		test-err $?
 
 		echo -e "$STDCOLOR Dando permisos $RESET"
-		chown -R www-data:www-data /var/www/html/*
+		chown -R www-data:www-data /var/www/html/
 		test-err $?
 
 		echo -e "$STDCOLOR Creando base de datos $RESET"
@@ -437,9 +460,9 @@ if [ $hacer = "0" ]; then
 		test-err $?
 
 		echo -e "$STDCOLOR Reiniciando servidor web $RESET"
-		a2enmod rewrite
+		a2enmod rewrite >>$LOGFILE 2>$ERRFILE
 		test-err $?
-		systemctl restart apache2
+		systemctl restart apache2 >>$LOGFILE 2>$ERRFILE
 		test-err $?
 
 		echo -e "$LYELLOW Abre tu Prestashop en el navegador $RESET"
