@@ -931,7 +931,6 @@ displayOSChoices() {
                 echo "          3) Arch Linux"
                 echo
                 echo -n "  Choice: [$strSuggestedOS] "
-                read osid
                 case $osid in
                     "")
                         osid=$strSuggestedOS
