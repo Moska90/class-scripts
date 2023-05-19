@@ -924,13 +924,7 @@ displayOSChoices() {
         else
             osid=$strSuggestedOS
             if [[ -z $autoaccept && ! -z $osid ]]; then
-                echo "  What version of Linux would you like to run the installation for?"
-                echo
-                echo "          1) Redhat Based Linux (Redhat, CentOS, Mageia)"
-                echo "          2) Debian Based Linux (Debian, Ubuntu, Kubuntu, Edubuntu)"
-                echo "          3) Arch Linux"
-                echo
-                echo -n "  Choice: [$strSuggestedOS] "
+                echo -e "Sistema operativo seleccionado: Debian"
                 case $osid in
                     "")
                         osid=$strSuggestedOS
@@ -1135,23 +1129,12 @@ configureMySql() {
     if [[ $connect_as_root -eq 0 ]]; then
         mysqlrootauth=$(mysql $sqloptionsroot --database=mysql --execute="SELECT Host,User,plugin FROM user WHERE Host='localhost' AND User='root' AND plugin='unix_socket'")
         if [[ -z $mysqlrootauth && -z $autoaccept ]]; then
-            echo
-            echo "   The installer detected a blank database *root* password. This"
-            echo "   is very common on a new install or if you upgrade from any"
-            echo "   version of FOG before 1.5.8. To improve overall security we ask"
-            echo "   you to supply an appropriate database *root* password now."
-            echo
-            echo "   NOTICE: Make sure you choose a good password but also one"
-            echo "   you can remember or use a password manager to store it."
-            echo "   The installer won't store the given password in any place"
-            echo "   and it will be lost right after the installer finishes!"
-            echo
-            echo -n "   Please enter a new database *root* password to be set: "
-            read -rs snmysqlrootpass
+            echo "MariaDB password"
+            snmysqlrootpass=$(generatePassword 20)
             echo
             echo
             if [[ -z $snmysqlrootpass ]]; then
-                snmysqlrootpass=$(generatePassword 20)
+                snmysqlrootpass=("alumnat")
                 echo
                 echo "   We don't accept a blank database *root* password anymore and"
                 echo "   will generate a password for you to use. Please make sure"
@@ -2045,14 +2028,15 @@ EOF
 }
 configureHttpd() {
     dots "Stopping web service"
+    php_ver="7.4"
     case $systemctl in
         yes)
             case $osid in
                 1|3)
-                    systemctl stop httpd php-fpm >>$workingdir/error_logs/fog_error_${version}.log 2>&1 && sleep 2
+                    systemctl stop httpd php7.4-fpm >>$workingdir/error_logs/fog_error_${version}.log 2>&1 && sleep 2
                     ;;
                 2)
-                    systemctl stop apache2 php${php_ver}-fpm >>$workingdir/error_logs/fog_error_${version}.log 2>&1 && sleep 2
+                    systemctl stop apache2 php7.4-fpm >>$workingdir/error_logs/fog_error_${version}.log 2>&1 && sleep 2
                     ;;
             esac
             errorStat $?
@@ -2061,13 +2045,14 @@ configureHttpd() {
             case $osid in
                 1)
                     service httpd stop >>$workingdir/error_logs/fog_error_${version}.log 2>&1 && sleep 2
-                    service php-fpm stop >>$workingdir/error_logs/fog_error_${version}.log 2>&1 && sleep 2
+                    service php$php_ver-fpm stop >>$workingdir/error_logs/fog_error_${version}.log 2>&1 && sleep 2
                     errorStat $?
                     ;;
                 2)
                     service apache2 stop >>$workingdir/error_logs/fog_error_${version}.log 2>&1 && sleep 2
                     errorStat $?
-                    service php${php_ver}-fpm stop >>$workingdir/error_logs/fog_error_${version}.log 2>&1
+                    service php$php_ver-fpm stop >>$workingdir/error_logs/fog_error_${version}.log 2>&1
+                    # service php${php_ver}-fpm stop >>$workingdir/error_logs/fog_error_${version}.log 2>&1
                     ;;
             esac
             ;;

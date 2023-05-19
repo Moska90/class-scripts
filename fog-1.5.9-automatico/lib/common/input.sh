@@ -14,7 +14,6 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 if [[ $guessdefaults == 1 ]]; then
-    echo -e "Sistema operativo seleccionado: Debian"
     strSuggestedOS=2
 
     allinterfaces=$(getAllNetworkInterfaces)
