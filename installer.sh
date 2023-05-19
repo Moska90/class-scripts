@@ -87,7 +87,7 @@ while true; do
 
 	# Install
 	case $hacer in
-		0)
+		0|[Ii]|[Ii][Nn][Ss][Tt][Aa][Ll][Ll])
 			clear
 			intro
 
@@ -109,7 +109,7 @@ while true; do
 				while true; do
 					case $script in
 						# GLPI
-						0)
+						0|[Gg]|[Gg][Ll][Pp][Ii])
 							LOGFILE="/var/log/install/glpi.log"
 							clear
 							intro
@@ -201,7 +201,7 @@ while true; do
 							;;
 
 						# Wordpress
-						1)
+						1|[Ww]|[Ww][Oo][Rr][Dd][Pp][Rr][Ee][Ss])
 							LOGFILE="/var/log/install/wordpress.log"
 							clear
 							intro
@@ -283,7 +283,7 @@ while true; do
 							;;
 
 						# KMS
-						2)
+						2|[Kk]|[Kk][Mm][Ss])
 							LOGFILE="/var/log/install/kms.log"
 							clear
 							intro
@@ -350,7 +350,7 @@ while true; do
 							;;
 
 						# Moodle
-						3)
+						3|[Mm]|[Mm][Oo][Oo][Dd][Ll][Ee])
 							LOGFILE="/var/log/install/moodle.log"
 							clear
 							intro
@@ -431,7 +431,7 @@ while true; do
 							;;
 
 						# Prestashop
-						4)
+						4|[Pp]|[Pp][Rr][Ee][Ss][Tt][Aa][Ss][Hh[Oo][Pp])
 							LOGFILE="/var/log/install/prestashop.log"
 							clear
 							intro
@@ -530,7 +530,7 @@ while true; do
 			done
 			;;
 	# Red
-		1)
+		1|[Rr]|[Rr][Ee][Dd])
 			LOGFILE="/var/log/install/red.log"
 			clear
 			intro
@@ -554,7 +554,7 @@ while true; do
 			break
 			;;
 	# Hardware
-		2)
+		2|[Hh]|[Hh][Aa][Rr][Dd][Ww][Aa][Rr][Ee])
 			LOGFILE="/var/log/install/hardware.log"
 			clear
 			intro
