@@ -90,22 +90,15 @@ while true; do
 		0|[Ii]|[Ii][Nn][Ss][Tt][Aa][Ll][Ll])
 			clear
 			intro
+			echo -e "Que quieres instalar"
 
 			for i in ${!scripts[@]}; do
 				echo -e "$i) ${scripts[$i]}"
 			done
-			echo -e "Que quieres instalar"
+
 			read -p ">" script
+
 			while true; do
-				clear
-				intro
-
-				for i in ${!scripts[@]}; do
-					echo -e "$i) ${scripts[$i]}"
-				done
-
-				echo -e "Que quieres instalar"
-				read -p ">" script
 				while true; do
 					case $script in
 						# GLPI
@@ -128,19 +121,6 @@ while true; do
 
 							read -p ">" webserver
 
-							echo -e "$STDCOLOR Que nombre quieres para tu base de datos $RESET"
-							read -p ">" database
-							echo -e "$STDCOLOR Que nombre de usuario quieres para tu base de datos $RESET"
-							read -p ">" username
-							echo -e "$STDCOLOR Que contraseña quieres para tu base de datos $RESET"
-							read -p ">" password
-
-							echo -e "$STDCOLOR Instalando dependencias $RESET"
-							apt-get update >>$LOGFILE 2>$ERRFILE
-							test-err $?
-							apt-get install -y apache2 mariadb-server php php-mysql php-json php-fileinfo php-dom php-simplexml php-curl php-gd php-intl >>$LOGFILE 2>$ERRFILE
-							test-err $?
-
 							echo -e "$STDCOLOR Instalando GLPI $RESET"
 							rm /var/www/html/index.html >>$LOGFILE 2>$ERRFILE
 							case $webserver in
@@ -152,7 +132,7 @@ while true; do
 									unzip glpi.zip >>$LOGFILE 2>$ERRFILE
 									test-err $?
 									rm glpi.zip >>/dev/null 2>&1
-								;;
+									;;
 								1)
 									wget https://github.com/glpi-project/glpi/releases/download/10.0.7/glpi-10.0.7.tgz >>$LOGFILE 2>$ERRFILE
 									test-err $?
@@ -160,11 +140,28 @@ while true; do
 									test-err $?
 									rm glpi-10.0.7.tgz >>/dev/null 2>&1
 									;;
+								[Ee]|[Ee][Xx][Ii][Tt])
+									break 2
+									;;
 								*)
 									echo "No valido"
 									break
 									;;
 							esac
+
+							echo -e "$STDCOLOR Que nombre quieres para tu base de datos $RESET"
+							read -p ">" database
+							echo -e "$STDCOLOR Que nombre de usuario quieres para tu base de datos $RESET"
+							read -p ">" username
+							echo -e "$STDCOLOR Que contraseña quieres para tu base de datos $RESET"
+							read -p ">" password
+							
+							echo -e "$STDCOLOR Instalando dependencias $RESET"
+							apt-get update >>$LOGFILE 2>$ERRFILE
+							test-err $?
+							apt-get install -y apache2 mariadb-server php php-mysql php-json php-fileinfo php-dom php-simplexml php-curl php-gd php-intl >>$LOGFILE 2>$ERRFILE
+							test-err $?
+
 							mv glpi/* /var/www/html >>$LOGFILE 2>$ERRFILE
 							test-err $?
 							rm -r glpi >>/dev/null 2>&1
@@ -197,7 +194,7 @@ while true; do
 							echo -e "$LGREY Sesion de glpi $RESET"
 							echo -e "$LGREY Usuario: glpi $RESET"
 							echo -e "$LGREY Contraseña: glpi $RESET"
-							break
+							break 2
 							;;
 
 						# Wordpress
@@ -280,6 +277,7 @@ while true; do
 							echo -e "$LGREY Base de datos: $database $RESET"
 							echo -e "$LGREY Usuario: $username $RESET"
 							echo -e "$LGREY Contraseña: $password $RESET"
+							break 3
 							;;
 
 						# KMS
@@ -346,7 +344,7 @@ while true; do
 							echo -e "\t\t$BOLD$LGREY slmgr.vbs/ato $RESET"
 							echo -e "$BOLD$LGREY Para comprovar que funciona: $RESET"
 							echo -e "\t\t$BOLD$LGREY slmgr.vbs/dli $RESET"
-							exit 1
+							break 3
 							;;
 
 						# Moodle
@@ -428,6 +426,7 @@ while true; do
 							echo -e "$LGREY Base de datos: $database $RESET"
 							echo -e "$LGREY Usuario: $username $RESET"
 							echo -e "$LGREY Contraseña: $password $RESET"
+							break 3
 							;;
 
 						# Prestashop
@@ -518,6 +517,11 @@ while true; do
 							echo -e "$LGREY Base de datos: $database $RESET"
 							echo -e "$LGREY Usuario: $username $RESET"
 							echo -e "$LGREY Contraseña: $password $RESET"
+							break 3
+							;;
+
+						[Ee]|[Ee][Xx][Ii][Tt])
+							break 2
 							;;
 
 						# Cualquier otra cosa
@@ -592,7 +596,10 @@ while true; do
 			echo -e "$LMAGENTA -----------------------------$RESET"
 			break
 			;;
-
+		[Ee]|[Ee][Xx][Ii][Tt])
+		echo -e "$ERRCOLOR Has salido con exito $RESET"
+			break
+			;;
 	# Otra cosa
 		*)
 			echo "Respuesta incorrecta"
