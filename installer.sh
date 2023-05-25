@@ -16,12 +16,30 @@ ERRFILE="/var/log/install/error.log"
 
 LOCALE=$(locale | grep "LANG" | cut -d"=" -f2-)
 
-function intro(){
-	echo -e "$BOLD$LMAGENTA    //===============================================//$RESET"
-	echo -e "$BOLD$LMAGENTA   //=====$LCYAN Creando scripts desde hace 2 dias $BOLD$LMAGENTA=======//$RESET"
-	echo -e "$BOLD$LMAGENTA  //============$LCYAN GOLDNN ¬ MOSKA MAKEIT $BOLD$LMAGENTA ===========//$RESET"
-	echo -e "$BOLD$LMAGENTA //===============================================//$RESET"
-	echo -e "\r\r"  
+function madeby {
+	echo
+	echo -e "$BOLD$LMAGENTA                               ,ooooooooooo,                    "
+	echo -e "$BOLD$LMAGENTA                            ,;OOOOOOOOOOOOOOo,                  "
+	echo -e "$BOLD$LMAGENTA                          ,ooOOOOOOOOOOOOOOOOOo;,,,,            "
+	echo -e "$BOLD$LMAGENTA                       ,ooooOOOOOOOOOOOOOOOOOOOOooo(@,       $LRED        *****   **    **                           *"
+	echo -e "$BOLD$LMAGENTA            _  __   __;oooooo OOOOOOOOOOO; ;@@@@@@@o;@@,     $LRED     ******  ****** *****                         **"
+	echo -e "$BOLD$LMAGENTA    _______/@@@@@@@@@)ooOOOOOO) oOOOOOOOOOo; ;o@@@@@o;@@@:   $LRED    **   *  *  ****** *****                       **"
+	echo -e "$BOLD$LMAGENTA   /######)@@@@@@@@@@( _______ ( oOOOOOOOOOOo o@@@@@@@@@;    $LRED   *    *  *   ** **  ** **                        **"
+	echo -e "$BOLD$LMAGENTA  <######)@@@@@@@@@@@@(######/  ,;;;  oOOOOOo @@@@@@o,\@@;   $LRED       *  *    **     **       ****        ****    **"
+	echo -e "$BOLD$LMAGENTA        \@@@@@@@@@@@@(######/ oO (@@@@\ oOOOOO;@@@@@@@, \@,  $LRED      ** **    **     **      **  **     ** **** * **  ***       ***"
+	echo -e "$BOLD$LMAGENTA         ))@@@@@@@@@@(       oOOOo@@@@@@: ;;oo,o@@@@@;   (@) $LRED     ** **     **     **      **   ***   **   ***  ** * ***     * ***  *"
+	echo -e "$BOLD$LMAGENTA         )   @@@@@@@( (  ooOOOOOoo:@@@@@: , /###o@@@@;       $LRED      ** **    **     **     **    **   ****       ***   *    *    ****"
+	echo -e "$BOLD$LMAGENTA         ( (0)     (0) ) ooooooo /@@@@@/,  :####o@@@@;       $LRED      ** **    **     **    **     **      ***    **  *      **    **"
+	echo -e "$BOLD$LMAGENTA          )           ( ''''''''/@@@@@/     /###/:@@@@;      $LRED      *  **    **     **    **     **        ***  ** **      **    **"
+	echo -e "$BOLD$LMAGENTA           ',       ,'     /###/@@@@@/     :###; :@@@@@;     $LRED     ** **     **      **   **    **    ****  **  ******     **    **"
+	echo -e "$BOLD$LMAGENTA             \_'_'_/      /###/@@@@/       :###; :@@@@@;     $LRED    ** **      **      **    ******    * **** *   **  ***    **    **"
+	echo -e "$BOLD$LMAGENTA              ~~~~~      ;###;@@@@/        :##;  ':@@@@;     $LRED    ***                **     ***        ****    **   *** *  ***** **"
+	echo -e "$BOLD$LMAGENTA                        ;###;@@@@;       /  /    :@@@;       $LRED                                                  **   ***    ***   **"
+	echo -e "$BOLD$LMAGENTA                       /~~~~;@@@@;      '-^-'    /   \'         "
+	echo -e "$BOLD$LMAGENTA                       '-^--;@@@@/               '-^--'         "
+	echo -e "$BOLD$LMAGENTA                           :~~~~:"
+	echo -e "$BOLD$LMAGENTA                           \/\_/$RESET"
+	echo
 }
 
 function isroot() {
@@ -59,7 +77,7 @@ fi
 }
 
 clear
-intro
+madeby
 isroot
 ping -c 1 -W 1 google.com >>/dev/null 2>&1
 internet $?
@@ -76,7 +94,7 @@ what=("Install" "Red" "Hardware")
 
 while true; do
 	clear
-	intro
+	madeby
 
 	for i in ${!what[@]}; do
 		echo -e "$i) ${what[$i]}"
@@ -89,7 +107,7 @@ while true; do
 	case $hacer in
 		0|[Ii]|[Ii][Nn][Ss][Tt][Aa][Ll][Ll])
 			clear
-			intro
+			madeby
 			echo -e "Que quieres instalar"
 
 			for i in ${!scripts[@]}; do
@@ -105,7 +123,7 @@ while true; do
 						0|[Gg]|[Gg][Ll][Pp][Ii])
 							LOGFILE="/var/log/install/glpi.log"
 							clear
-							intro
+							madeby
 
 							echo -e "$STDCOLOR ------------------ $RESET"
 							echo -e "$STDCOLOR Instalador de GLPI $RESET"
@@ -201,7 +219,7 @@ while true; do
 						1|[Ww]|[Ww][Oo][Rr][Dd][Pp][Rr][Ee][Ss])
 							LOGFILE="/var/log/install/wordpress.log"
 							clear
-							intro
+							madeby
 
 							echo -e "$STDCOLOR ----------------------- $RESET"
 							echo -e "$STDCOLOR Instalador de Wordpress $RESET"
@@ -284,7 +302,7 @@ while true; do
 						2|[Kk]|[Kk][Mm][Ss])
 							LOGFILE="/var/log/install/kms.log"
 							clear
-							intro
+							madeby
 
 							echo -e "$BOLD$STDCOLOR Instalador de servidor KMS $RESET"
 							apt update >>$LOGFILE 2>$ERRFILE
@@ -337,7 +355,7 @@ while true; do
 							get_ip=$(ip a | grep "scope global dynamic" | tr -s " " | cut -d" " -f 3-3 | cut -d"/" -f 1-1)
 
 							clear
-							intro
+							madeby
 
 							echo -e "$BOLD$LGREY Para activar un windows haz: $RESET"
 							echo -e "\t\t$BOLD$LGREY slmgr.vbs/skms [$get_ip] $RESET"
@@ -351,7 +369,7 @@ while true; do
 						3|[Mm]|[Mm][Oo][Oo][Dd][Ll][Ee])
 							LOGFILE="/var/log/install/moodle.log"
 							clear
-							intro
+							madeby
 
 							echo -e "$STDCOLOR -------------------- $RESET"
 							echo -e "$STDCOLOR Instalador de Moodle $RESET"
@@ -433,7 +451,7 @@ while true; do
 						4|[Pp]|[Pp][Rr][Ee][Ss][Tt][Aa][Ss][Hh[Oo][Pp])
 							LOGFILE="/var/log/install/prestashop.log"
 							clear
-							intro
+							madeby
 
 							echo -e "$STDCOLOR ------------------ $RESET"
 							echo -e "$STDCOLOR Instalador de GLPI $RESET"
@@ -527,7 +545,7 @@ while true; do
 						# Cualquier otra cosa
 						*)
 							echo "Respuesta incorrecta"
-							break
+							break 2
 							;;
 					esac
 				done
@@ -537,7 +555,7 @@ while true; do
 		1|[Rr]|[Rr][Ee][Dd])
 			LOGFILE="/var/log/install/red.log"
 			clear
-			intro
+			madeby
 
 			get_ip=$(ip a | grep "scope global dynamic" | tr -s " " | cut -d" " -f 3-3)
 			get_gw=$(ip r | grep "default via" | tr -s " " | cut -d" " -f 3-3)
@@ -561,7 +579,7 @@ while true; do
 		2|[Hh]|[Hh][Aa][Rr][Dd][Ww][Aa][Rr][Ee])
 			LOGFILE="/var/log/install/hardware.log"
 			clear
-			intro
+			madeby
 
 			apt install -y bc >>$LOGFILE 2>$ERRFILE
 
