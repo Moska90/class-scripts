@@ -567,86 +567,39 @@ while [[ -z $blGo ]]; do
                 esac
             fi
             configureUsers
-            case $installtype in
-                [Ss])
-                    checkDatabaseConnection
-                    backupReports
-                    configureMinHttpd
-                    configureStorage
-                    configureDHCP
-                    configureTFTPandPXE
-                    configureFTP
-                    configureSnapins
-                    configureUDPCast
-                    installInitScript
-                    installFOGServices
-                    configureFOGService
-                    configureNFS
-                    writeUpdateFile
-                    linkOptFogDir
-                    if [[ $bluseralreadyexists == 1 ]]; then
-                        echo
-                        echo "\n * Upgrade complete\n"
-                        echo
-                    else
-                        registerStorageNode
-                        updateStorageNodeCredentials
-                        [[ -n $snmysqlhost ]] && fogserver=$snmysqlhost || fogserver="fog-server"
-                        echo
-                        echo " * Setup complete"
-                        echo
-                        echo
-                        echo " * You still need to setup this node in the fog management "
-                        echo " | portal. You will need the username and password listed"
-                        echo " | below."
-                        echo
-                        echo " * Management Server URL:"
-                        echo "   ${httpproto}://${fogserver}${webroot}"
-                        echo
-                        echo "   You will need this, write this down!"
-                        echo "   IP Address:          $ipaddress"
-                        echo "   Interface:           $interface"
-                        echo "   Management Username: $username"
-                        echo "   Management Password: $password"
-                        echo
-                    fi
-                    ;;
-                [Nn])
-                    configureMySql
-                    backupReports
-                    configureHttpd
-                    backupDB
-                    updateDB
-                    configureStorage
-                    configureDHCP
-                    configureTFTPandPXE
-                    configureFTP
-                    configureSnapins
-                    configureUDPCast
-                    installInitScript
-                    installFOGServices
-                    configureFOGService
-                    configureNFS
-                    writeUpdateFile
-                    linkOptFogDir
-                    updateStorageNodeCredentials
-                    echo
-                    echo " * Setup complete"
-                    echo
-                    echo "   You can now login to the FOG Management Portal using"
-                    echo "   the information listed below.  The login information"
-                    echo "   is only if this is the first install."
-                    echo
-                    echo "   This can be done by opening a web browser and going to:"
-                    echo
-                    echo "   ${httpproto}://${ipaddress}${webroot}management"
-                    echo
-                    echo "   Default User Information"
-                    echo "   Username: fog"
-                    echo "   Password: password"
-                    echo
-                    ;;
-            esac
+            configureMySql
+            backupReports
+            configureHttpd
+            backupDB
+            updateDB
+            configureStorage
+            configureDHCP
+            configureTFTPandPXE
+            configureFTP
+            configureSnapins
+            configureUDPCast
+            installInitScript
+            installFOGServices
+            configureFOGService
+            configureNFS
+            writeUpdateFile
+            linkOptFogDir
+            updateStorageNodeCredentials
+            echo
+            echo " * Setup complete"
+            echo
+            echo "   You can now login to the FOG Management Portal using"
+            echo "   the information listed below.  The login information"
+            echo "   is only if this is the first install."
+            echo
+            echo "   This can be done by opening a web browser and going to:"
+            echo
+            echo "   ${httpproto}://${ipaddress}${webroot}management"
+            echo
+            echo "   Default User Information"
+            echo "   Username: fog"
+            echo "   Password: password"
+            echo
             [[ -d $webdirdest/maintenance ]] && rm -rf $webdirdest/maintenance
             ;;
         [Nn]|[Nn][Oo])

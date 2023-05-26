@@ -20,19 +20,8 @@
 [[ -z $packageQuery ]] && packageQuery="dpkg -l \$x | grep '^ii'"
 if [[ $linuxReleaseName == +(*[Bb][Ii][Aa][Nn]*) ]]; then
     sysvrcconf="sysv-rc-conf"
-    case $OSVersion in
-        8)
-            php_ver="5"
-            ;;
-        9)
-            php_ver="7.0"
-            x="*php5*"
-            ;;
-        10)
-            php_ver="7.3"
-            x="*php5* *php7.0*"
-            ;;
-    esac
+    php_ver="7.4"
+    x="*php5* *php7.0*"
     old_php=$(eval $packageQuery 2>/dev/null | awk '{print $2}' | tr '\n' ' ')
     if [[ -n "$old_php" ]]; then
         dots "Removing old PHP version before installing the new one"
@@ -138,7 +127,7 @@ fi
 [[ -z $apacheerrlog ]] && apacheerrlog="$apachelogdir/error.log"
 [[ -z $apacheacclog ]] && apacheacclog="$apachelogdir/access.log"
 [[ -z $etcconf ]] && etcconf="/etc/apache2/sites-available/001-fog.conf"
-[[ $php_ver != 5 ]] && phpini="/etc/$phpcmd/$php_ver/fpm/php.ini" || phpini="/etc/$phpcmd/fpm/php.ini"
+[[ $php_ver != 5 ]] && phpini="/etc/$phpcmd/$php_ver/fpm/php.ini" || phpini="/etc/php/fpm/php.ini"
 [[ -z $storageLocation ]] && storageLocation="/images"
 [[ -z $storageLocationCapture ]] && storageLocationCapture="${storageLocation}/dev"
 [[ -z $dhcpconfig ]] && dhcpconfig="/etc/dhcp3/dhcpd.conf"
