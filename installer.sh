@@ -538,6 +538,7 @@ while true; do
 							break 3
 							;;
 
+						# Para volver al menu anterior
 						[Ee]|[Ee][Xx][Ii][Tt])
 							break 2
 							;;
@@ -551,7 +552,7 @@ while true; do
 				done
 			done
 			;;
-	# Red
+		# Red
 		1|[Rr]|[Rr][Ee][Dd])
 			LOGFILE="/var/log/install/red.log"
 			clear
@@ -575,7 +576,7 @@ while true; do
 			echo -e "$LMAGENTA -------------------------------- $RESET"
 			break
 			;;
-	# Hardware
+		# Hardware
 		2|[Hh]|[Hh][Aa][Rr][Dd][Ww][Aa][Rr][Ee])
 			LOGFILE="/var/log/install/hardware.log"
 			clear
@@ -614,11 +615,13 @@ while true; do
 			echo -e "$LMAGENTA -----------------------------$RESET"
 			break
 			;;
+
+		# Para volver al menu anterior
 		[Ee]|[Ee][Xx][Ii][Tt])
-		echo -e "$ERRCOLOR Has salido con exito $RESET"
+			echo -e "$ERRCOLOR Has salido con exito $RESET"
 			break
 			;;
-	# Otra cosa
+		# Otra cosa
 		*)
 			echo "Respuesta incorrecta"
 			;;

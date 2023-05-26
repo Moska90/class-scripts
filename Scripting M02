@@ -3,9 +3,9 @@
 apt update >/dev/null 2>&1 (quita todos los mensajes)
 
 # Para copiar de maquina a virtual
-scp -P 2222 script.sh root@172.0.0.1:/root/
+scp -P 2222 script.sh root@127.0.0.1:/root/
 # Para copiar de virtual a maquina
-scp -P 2222 root@172.0.0.1:/root/script.sh .
+scp -P 2222 root@127.0.0.1:/root/script.sh .
 
 function test-err() {
 	if [ $1 -ne 0 ]; then
