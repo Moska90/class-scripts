@@ -74,26 +74,15 @@ backupDB() {
     fi
 }
 updateDB() {
-    case $dbupdate in
-        [Yy]|[Yy][Ee][Ss])
-            dots "Updating Database"
-            local replace='s/[]"\/$&*.^|[]/\\&/g'
-            local escstorageLocation=$(echo $storageLocation | sed -e $replace)
-            sed -i -e "s/'\/images\/'/'$escstorageLocation'/g" $webdirdest/commons/schema.php
-            wget --no-check-certificate -qO - --post-data="confirm&fogverified" --no-proxy ${httpproto}://${ipaddress}/${webroot}management/index.php?node=schema >>$workingdir/error_logs/fog_error_${version}.log 2>&1
-            errorStat $?
-            ;;
-        *)
-            echo
-            echo " * You still need to install/update your database schema."
-            echo " * This can be done by opening a web browser and going to:"
-            echo
-            echo "   $httpproto://${ipaddress}/fog/management"
-            echo
-            read -p " * Press [Enter] key when database is updated/installed."
-            echo
-            ;;
-    esac
+    echo
+    echo " * You still need to install/update your database schema."
+    echo " * This can be done by opening a web browser and going to:"
+    echo
+    echo "   $httpproto://${ipaddress}/fog/management"
+    echo
+    read -p " * Press [Enter] key when database is updated/installed."
+    echo
+
     dots "Update fogstorage database password"
     mysql $sqloptionsuser --password="${snmysqlpass}" --execute="INSERT INTO globalSettings (settingKey, settingDesc, settingValue, settingCategory) VALUES ('FOG_STORAGENODE_MYSQLPASS', 'This setting defines the password the storage nodes should use to connect to the fog server.', \"$snmysqlstoragepass\", 'FOG Storage Nodes') ON DUPLICATE KEY UPDATE settingValue=\"$snmysqlstoragepass\"" $mysqldbname >>$workingdir/error_logs/fog_error_${version}.log 2>&1
     errorStat $?
