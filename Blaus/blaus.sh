@@ -9,23 +9,43 @@ LGREY="\e[97m"
 BOLD="\e[1m"
 RESET="\e[0m"
 
-STDCOLOR="\e[96m"
-ERRCOLOR="\e[91m"
+declare -A code
+code=(`cat "2lettercode.txt"`)
+
+for key in ${!code[@]}; do
+    echo -e "$key"
+done
+read
+
+function passwd-check() {
+        if [[ "$passwd" == "$passwd2" ]]; then
+                return 0
+        else
+                return 1
+        fi
+} 
 
 clear
 
-
-#Usuario y contraseña
-echo -e "Comenzamos con tu personalizacion"
+echo -e " Bienvenido al script de automatización de DHM"
 sleep 1
 
-clear
 
-echo -e " Que nombre de usuario quieres tener?"
+echo -e " Escribe tu nombre de usuario"
 read -p " >" user
 
-echo -e " Escoge una contraseña para acceder"
-read -s -p " >" password
+while true; do
+        echo -e " Escribe una contraseña para acceder"
+        read passwd
+        echo -e " Vuelve a escribir la contraseña"
+        read passwd2
+        passwd-check
+        if [ $? -eq 0 ]; then
+                break
+        else
+                echo "La contraseña que has escrito no es correcta, por favor escribela de nuevo."
+        fi
+done
 
 echo -e " Cual es tu dominio?"
 read -p " >" domain
@@ -47,30 +67,30 @@ ERRFILE="/var/www/$user/log/$domain.error.log"
 echo -e "$LGREEN Rellena las siguientes preguntas para terminar de configurar tu dominio,\n cuando hayas leido esto pulsa ENTER $RESET"
 read
 
-echo -e " Contry Name (2 Letters)"
+echo -e " "
 read -p " >" country >>$LOGFILE 2>$ERRFILE
 
 echo -e " Provincia?"
-read -p " >" provincia >>$LOGFILE 2>$ERRFILE
+read -p " >" state >>$LOGFILE 2>$ERRFILE
 
 echo -e " Pueblo?"
 read -p " >" city >>$LOGFILE 2>$ERRFILE
 
 echo -e " Como se llama tu empresa?"
-read -p " >" empresa >>$LOGFILE 2>$ERRFILE
+read -p " >" company >>$LOGFILE 2>$ERRFILE
 
 echo -e " Cual es tu correo electronico?"
-read -p " >" correo >>$LOGFILE 2>$ERRFILE
+read -p " >" email >>$LOGFILE 2>$ERRFILE
 
 clear
 
 echo -e "$LYELLOW Es esta informacion correcta? $RESET"
 echo -e " $country"
-echo -e " $provincia"
+echo -e " $state"
 echo -e " $city"
-echo -e " $empresa"
+echo -e " $company"
 echo -e " $domain"
-echo -e " $correo"
+echo -e " $email"
 
 read -e -p "$LRED Estas seguro? [y/N] $RESET" response
 case $response in
@@ -86,11 +106,11 @@ esac
 # Comando OpenSSL para generar un certificado
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/$domain.key -out /etc/ssl/certs/$domain.crt <<EOF >>$LOGFILE 2>$ERRFILE
 $country
-$provincia
+$state
 $city
-$empresa
+$company
 $domain
-$correo
+$email
 EOF
 
 #Creando archivo de configuracion de servidor web
@@ -121,4 +141,3 @@ server {
         return 301 https://\$server_name\$request_uri;
 }
 " >> /etc/nginx/sites-available/$domain
-
