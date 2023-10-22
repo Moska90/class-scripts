@@ -156,7 +156,7 @@ server {
 
         root /var/www/$domain/html;
         index index.html index.htm index.nginx-debian.html;
-        server_name $domain     www.$domain;
+        server_name $domain www.$domain;
 
         location / {
                 try_files \$uri \$uri/ =404;
@@ -176,9 +176,9 @@ cp index.html /var/www/$domain/html/
 
 #SFTP + User Configuration
 echo -e "$LGREEN Iniciando configuracion de SFTP y Usuario$RESET"
-chmod 750 /var/www/$domain
-chmod -R 770 /var/www/$domain/html
-chmod 750 /var/www/$domain/log
+chmod 755 /var/www/$domain
+chmod -R 775 /var/www/$domain/html
+chmod 755 /var/www/$domain/log
 
 group=$company
 adduser $user --force-badname --quiet <<EOF >>/dev/null 2>&1
@@ -188,8 +188,7 @@ EOF
 addgroup $group --force-badname --quiet
 
 usermod -a -G "$group" "$user"
-chown root:$group /var/www/$domain
-chown -R $user:$group /var/www/$domain/html
+chown -R root:$group /var/www/$domain
 
 echo -e "
 Match Group $group
