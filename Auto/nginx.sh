@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Este script ha sido desarrollado por GOLDNN y MOSKA
+# Este script ha sido desarrollado por PRIME TEAM
 
 # La manera de utilizarlo es comentar aquellas lineas indicadas
 # para dejar de hacer ciertas tareas por ejemplo
@@ -24,10 +24,7 @@ LGREY="\e[97m"
 BOLD="\e[1m"
 RESET="\e[0m"
 
-apt install nginx >/dev/null 2>&1
-
 # Execution checkers & Basic functions
-execute_flag_ssk=0
 function passwd-check() {
         if [[ "$passwd" == "$passwd2" ]]; then
                 return 0
@@ -49,7 +46,7 @@ function test-email() {
 function newcomer() {
     clear
     echo -e "$LMAGENTA"
-    echo -e "Bienvenido a el script modular de VHOSTING con SFTP hecho por IJR & MOSKA$RESET"
+    echo -e "Bienvenido a el script modular de VHOSTING con SFTP hecho por PRIME TEAM$RESET"
     echo -e "Por favor escriba su nombre de usuario"
     read -p ">" user
 
@@ -141,7 +138,6 @@ function sftp_configuration() {
     chmod -R 775 /var/www/$domain/html/
     chown -R root:$user /var/www/$domain/
 
-
     echo -e "
     Match Group $user
         ChrootDirectory /var/www/$domain
@@ -153,35 +149,7 @@ function sftp_configuration() {
     systemctl restart sshd
 }
 function ssl_ssk() {
-    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout "/etc/ssl/private/$domain.key" -out "/etc/ssl/certs/$domain.crt" -subj "/C=ES/ST=Catalunya/L=Barcelona/O=IJR & Moska Trust Services/OU=IJR & Moska Trust Services/CN=$domain/emailAddress=$email"
-    execute_flag_ssk=1
-}
-function vhost_http_server_config() {
-    echo -e "
-    server {
-        listen 80;
-        listen [::]:80;
-
-        root /var/www/$domain/html;
-        index index.html index.htm index.nginx-debian.html;
-
-        server_name $domain www.$domain;
-
-        location / {
-                try_files \$uri \$uri/ =404;
-        }
-
-    }" > /etc/nginx/sites-available/$domain
-    cp /etc/nginx/sites-available/$domain /etc/nginx/sites-enabled/
-    echo -e "<!DOCTYPE html>
-    <html lang="es">
-        <body>
-            <h1>Bienvenido a tu dominio!</h1>
-            <p>Esta es la pagina default de $user, 
-            para editar tu pagina web entra por SFTP.</p>
-        </body>
-    </html>" > /var/www/$domain/html/index.html
-
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout "/etc/ssl/private/$domain.key" -out "/etc/ssl/certs/$domain.crt" -subj "/C=ES/ST=Catalunya/L=Barcelona/O=PRIME TEAM/OU=PRIME TEAM/CN=$domain/emailAddress=$email"
 }
 function vhost_https_server_config() {
     echo -e "
@@ -212,7 +180,7 @@ function vhost_https_server_config() {
     cp /etc/nginx/sites-available/$domain /etc/nginx/sites-enabled/
     echo -e "<!DOCTYPE html>
     <html lang="es">
-        <title>DHM S.L</title>
+        <title>PRIME TEAM</title>
         <body>
             <h1>Bienvenido a tu dominio!</h1>
             <p>Esta es la pagina default de $user,
@@ -249,12 +217,8 @@ newcomer
 sftp_configuration
 # Creation of a self-signed certificate
 ssl_ssk
-# Do not comment this lines (automatic detection of https or http server, it will act based on if ssl_ssk is commented out)
-if [ "$execute_flag_ssk" -eq 1 ]; then
-        vhost_https_server_config
-    else
-        vhost_http_server_config
-fi
+# Configuration of nginx's https
+vhost_https_server_config
 
 systemctl restart nginx sshd
 nginx -t
