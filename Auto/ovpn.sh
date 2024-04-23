@@ -13,9 +13,9 @@ STDCOLOR="\e[96m"
 ERRCOLOR="\e[91m"
 
 # Directories for .ovpn files
-KEY_DIR=/etc/openvpn/client
-OUTPUT_DIR=/etc/openvpn/client
-BASE_CONFIG=/etc/openvpn/client/client.conf
+FILES_DIR=/root/files/
+OUTPUT_DIR=/root/ovpn
+BASE_CONF=/root/files/client.conf
 
 # Function for checks
 function pwdeasyrsa() {
@@ -27,19 +27,31 @@ function pwdeasyrsa() {
 	fi
 }
 
-# Cert and key creation for client
-
 pwdeasyrsa
 
+# Basic questions for file names
+echo -e "$LCYAN What's the name of the client?$RESET"
+read -p " >" client
+
+# Cert and key creation for client
+
+./easyrsa gen-req $client nopass
+mv pki/private/$client.key $FILES_DIR
+
+./easyrsa sign-req client $client
+mv pki/reqs/$client.req $FILES_DIR
+
 # .ovpn creation for client
-cat $BASE_CONFIG \
+echo -e "$BASE_CONFIG \
 	<(echo -e '<ca>') \
-	$KEY_DIR/ca.crt				
+	$FILES_DIR/ca.crt
 	<(echo -e '</ca>\n<cert>') \
-	$KEY_DIR/client.crt
+	$FILES_DIR/$client.crt
 	<(echo -e '</cert>\n<key>') \
-	$KEY_DIR/client.key
+	$FILES_DIR/$client.key
 	<(echo -e '</key>\n<tls-crypt>') \
-	$KEY_DIR/ta.key
-	<(echo -e '</tls-crypt>') \
-	> $OUTPUT_DIR/$1.ovpn
+	$FILES_DIR/ta.key
+	<(echo -e '</tls-crypt>') \" 
+	
+	
+	
