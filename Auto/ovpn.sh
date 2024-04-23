@@ -20,18 +20,19 @@ BASE_CONFIG=/etc/openvpn/client/client.conf
 # Function for checks
 function pwdeasyrsa() {
 	if [[ $(pwd) != */EasyRSA* ]]; then
-		echo -e "$LRED Run the script from the EasyRSA directory"
+		echo -e "$LRED Run the script from the EasyRSA directory$RESET"
 		exit 1
+	else
+		echo -e "$LGREEN Continuing with the script$RESET"
 	fi
 }
 
-
 # Cert and key creation for client
 
-
+pwdeasyrsa
 
 # .ovpn creation for client
-#cat $BASE_CONFIG \
+cat $BASE_CONFIG \
 	<(echo -e '<ca>') \
 	$KEY_DIR/ca.crt
 	<(echo -e '</ca>\n<cert>') \
