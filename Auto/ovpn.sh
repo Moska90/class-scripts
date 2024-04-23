@@ -34,7 +34,7 @@ pwdeasyrsa
 # .ovpn creation for client
 cat $BASE_CONFIG \
 	<(echo -e '<ca>') \
-	$KEY_DIR/ca.crt
+	$KEY_DIR/ca.crt				
 	<(echo -e '</ca>\n<cert>') \
 	$KEY_DIR/client.crt
 	<(echo -e '</cert>\n<key>') \
