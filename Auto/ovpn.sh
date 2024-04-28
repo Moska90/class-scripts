@@ -14,7 +14,7 @@ ERRCOLOR="\e[91m"
 
 # Directories for .ovpn files
 FILES_DIR=/root/files/
-OUTPUT_DIR=/root/ovpn
+OUTPUT_DIR=/root/ovpn/
 BASE_CONF=/root/files/client.conf
 
 # Function for checks
@@ -35,23 +35,27 @@ read -p " >" client
 
 # Cert and key creation for client
 
-./easyrsa gen-req $client nopass
-mv pki/private/$client.key $FILES_DIR
+./easyrsa gen-req $client nopass <<EOF
+$client
+EOF
 
-./easyrsa sign-req client $client
+./easyrsa sign-req client $client <<EOF
+yes
+EOF
+
+mv pki/private/$client.key $FILES_DIR
 mv pki/reqs/$client.req $FILES_DIR
+mv pki/issued/$client.crt $FILES_DIR
 
 # .ovpn creation for client
-echo -e "$BASE_CONFIG \
-	<(echo -e '<ca>') \
-	$FILES_DIR/ca.crt
-	<(echo -e '</ca>\n<cert>') \
-	$FILES_DIR/$client.crt
-	<(echo -e '</cert>\n<key>') \
-	$FILES_DIR/$client.key
-	<(echo -e '</key>\n<tls-crypt>') \
-	$FILES_DIR/ta.key
-	<(echo -e '</tls-crypt>') \" 
-	
-	
-	
+cat ${BASE_CONFIG} \
+    <(echo -e '<ca>') \
+    ${FILES_DIR}/ca.crt \
+    <(echo -e '</ca>\n<cert>') \
+    ${FILES_DIR}/$client.crt \
+    <(echo -e '</cert>\n<key>') \
+    ${FILES_DIR}/$client.key \
+    <(echo -e '</key>\n<tls-crypt>') \
+    ${FILES_DIR}/ta.key \
+    <(echo -e '</tls-crypt>') \
+    > ${OUTPUT_DIR}${client}.ovpn
