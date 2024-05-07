@@ -17,6 +17,8 @@ FILES_DIR=/root/files/
 OUTPUT_DIR=/root/ovpn/
 BASE_CONF=/root/files/client.conf
 
+mkdir /root/ovpn
+
 # Function for checks
 function pwdeasyrsa() {
 	if [[ $(pwd) != */EasyRSA* ]]; then
