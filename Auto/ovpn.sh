@@ -34,7 +34,6 @@ echo -e "$LCYAN What's the name of the client?$RESET"
 read -p " >" client
 
 # Cert and key creation for client
-
 ./easyrsa gen-req $client nopass <<EOF
 $client
 EOF
