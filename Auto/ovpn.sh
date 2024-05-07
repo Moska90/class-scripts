@@ -49,7 +49,7 @@ mv pki/reqs/$client.req $FILES_DIR
 mv pki/issued/$client.crt $FILES_DIR
 
 # .ovpn creation for client
-cat ${BASE_CONFIG} \
+cat ${BASE_CONF} \
     <(echo -e '<ca>') \
     ${FILES_DIR}/ca.crt \
     <(echo -e '</ca>\n<cert>') \
