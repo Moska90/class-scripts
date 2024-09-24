@@ -563,9 +563,9 @@ while true; do
 			get_dns=$(cat /etc/resolv.conf | grep "nameserver" | cut -d" " -f 2-2)
 
 			if [ '$cat /etc/resolv.conf | grep "nameserver" | cut -d" " -f 2-2 | wc -l' == 1 ]; then
-			    DNS=$(echo -e "$STDCOLOR  Tu DNS es:$RESET \t ${get_dns}")
-            else
-                DNS1=$(echo "$get_dns" | sed -n '1p')
+				DNS=$(echo -e "$STDCOLOR  Tu DNS es:$RESET \t ${get_dns}")
+			else
+                		DNS1=$(echo "$get_dns" | sed -n '1p')
 				DNS2=$(echo "$get_dns" | sed -n '2p')
 				DNS=$(echo -e "$STDCOLOR  Tu DNS 1 es:$RESET \t ${DNS1}" && echo -e "$STDCOLOR  Tu DNS 2 es:$RESET \t ${DNS2}")
 			fi
