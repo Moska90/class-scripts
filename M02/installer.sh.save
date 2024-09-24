@@ -562,18 +562,10 @@ while true; do
 			get_gw=$(ip r | grep "default via" | tr -s " " | cut -d" " -f 3-3)
 			get_dns=$(cat /etc/resolv.conf | grep "nameserver" | cut -d" " -f 2-2)
 
-			if [ '$cat /etc/resolv.conf | grep "nameserver" | cut -d" " -f 2-2 | wc -l' == 1 ]; then
-			    DNS=$(echo -e "$STDCOLOR  Tu DNS es:$RESET \t ${get_dns}")
-            else
-                DNS1=$(echo "$get_dns" | sed -n '1p')
-				DNS2=$(echo "$get_dns" | sed -n '2p')
-				DNS=$(echo -e "$STDCOLOR  Tu DNS 1 es:$RESET \t ${DNS1}" && echo -e "$STDCOLOR  Tu DNS 2 es:$RESET \t ${DNS2}")
-			fi
-
 			echo -e "$LMAGENTA -------------------------------- $RESET"
 			echo -e "$STDCOLOR  Tu IP es:$RESET \t ${get_ip}"
 			echo -e "$STDCOLOR  Tu GW es:$RESET \t ${get_gw}"
-			echo -e "$DNS"
+			echo -e "$STDCOLOR  Tu DNS es:$RESET \t ${get_dns}"
 			echo -e "$LMAGENTA -------------------------------- $RESET"
 			echo -e "\n"
 
@@ -605,12 +597,12 @@ while true; do
 			VGA=$(lspci | grep "VGA" | cut -d" " -f5- | sed 's/ (rev.*)//')
 			MOTHERBOARD=$(dmidecode --type system | grep "Product" | cut -d" " -f3-)
 
+			
+
 			if [ '$lspci | grep "VGA" | cut -d" " -f5- | wc -l' == 1 ]; then
-				GRAPHICS=$(echo -e "Gráfica:\t${VGA}")
+				GRAPHICS = echo -e "Gráfica:\t${VGA}"
 			else
-				VGA1=$(echo "$VGA" | sed -n '1p')
-				VGA2=$(echo "$VGA" | sed -n '2p')
-				GRAPHICS=$(echo -e "Gráfica 1:\t${VGA1}" && echo -e "   Gráfica 2:\t${VGA2}")
+				GRAPHICS = echo -e "Gráfica:\t${VGA} 2"
 			fi
 
 			echo -e "$LMAGENTA -----------------------------$RESET"
