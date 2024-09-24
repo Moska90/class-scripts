@@ -17,6 +17,8 @@ FILES_DIR=/root/files/
 OUTPUT_DIR=/root/ovpn/
 BASE_CONF=/root/files/client.conf
 
+mkdir /root/ovpn
+
 # Function for checks
 function pwdeasyrsa() {
 	if [[ $(pwd) != */EasyRSA* ]]; then
@@ -34,7 +36,6 @@ echo -e "$LCYAN What's the name of the client?$RESET"
 read -p " >" client
 
 # Cert and key creation for client
-
 ./easyrsa gen-req $client nopass <<EOF
 $client
 EOF
@@ -48,7 +49,7 @@ mv pki/reqs/$client.req $FILES_DIR
 mv pki/issued/$client.crt $FILES_DIR
 
 # .ovpn creation for client
-cat ${BASE_CONFIG} \
+cat ${BASE_CONF} \
     <(echo -e '<ca>') \
     ${FILES_DIR}/ca.crt \
     <(echo -e '</ca>\n<cert>') \
